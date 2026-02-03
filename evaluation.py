@@ -37,7 +37,6 @@ Akwakwak = Pokemon("Akwakwak", "Eau", "Il nage à vitesse max grâce à ses patt
 
 Pokedex = [Abo, Abra, Akwakwak]
 
-
 # AJOUT POKEMON DANS LISTBOX
 for p in Pokedex:
     listbox.insert(tk.END, p.name)
@@ -143,19 +142,24 @@ def add_pokedex():
         listbox.insert(tk.END, nouveau_pokemon.name)  
         messagebox.showinfo("Succès", f"{name1} a été ajouté au Pokédex !")
 
-        fichier= open("sauvegarde.txt", "a")
-        fichier.write(f"{nouveau_pokemon.name}, {nouveau_pokemon.type}, {nouveau_pokemon.capacity}, {nouveau_pokemon.attack}, {nouveau_pokemon.talent}, {nouveau_pokemon.image}+\n")
-        with open("sauvegarde.txt", "r", encoding= "utf-8") as f:
-             lines= f.readlines()
+        with open("sauvegarde.txt", "a", encoding="utf-8") as f:
+            fichier= open("sauvegarde.txt", "a")
+            fichier.write(f"{name1},{type1},{nouveau_pokemon.capacity},{nouveau_pokemon.attack},{nouveau_pokemon.talent}\n")
+        
+            lines= f.readlines()
 
-
-        for line in lines:
-            liste = line.split(", ")
-            name1 = liste[0]
-            type1 = liste[1]
-            capacity1 = liste[2]
-            attack1 = liste[3]
-            talent1 = liste[4]
+            for line in lines:
+                liste = line.split(", ")
+                name1 = liste[0]
+                type1 = liste[1]
+                capacity1 = liste[2]
+                attack1 = liste[3]
+                talent1 = liste[4]
+                  
+# Ajouter un nouveau pokemon
+                nouveau_pokemon= Pokemon(name1, type1, capacity1, attack1, talent1,imageO)
+                Pokedex.append(nouveau_pokemon)       
+                listbox.insert(tk.END, nouveau_pokemon.name)  
 
 
 
@@ -171,7 +175,8 @@ def delete():
                   break
       
         listbox.delete(index)
-        
+
+            
         
 # Pour vider les champs après ajout
         champ_saisie_name.delete(0, tk.END)
