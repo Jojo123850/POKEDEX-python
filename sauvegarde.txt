@@ -1,19 +1,5 @@
-Zarbi, frghtjy, ftrytu, zetrytu, zretry, pyimage10
-Zekrom, dfgh, sdfgh, rtyui, dfgh, pyimage10+
-Zoroak, tfuctiv, fvi_, drtfgyhu, dr(tfgyh, None+
-Zoroark, tfuctiv, fvi_, drtfgyhu, dr(tfgyh, pyimage10+
-Zarbi;vhnj,;fbgnh,;rtyu;dfghj
-éoko;dcfgvbhnj;dcfgvb;cdfvgb;dcfgvb
-Zygarde,xdcfgvhjn,xdcfvgbh,dcfvgbh,edrftgy
-Sylveroy,dfghj,edrftyuj,edrtfgy,edrgyh
-Motisma,edrtfgyuhji,edrtfgy,ertyujk,e'rtgyh
-Zacian,sdfghj,erftgyh,e'rtgyhu,ertfgyhu
-Tengalice,sdfghjk,dfghn,drftgyh,drftgyhu
-Crustabri,edrtgyuh,drftyh,cfgvbh,drfgyh
-Yveltal,dryuh,xcrvbhn,drftgyuhj,xcrfgvbhjn
-Tadmorv,rxctvn,edrfgh,drtfgyh,edrtgyh
-Yuyu,dfghj,dfghj,drftgyh,rtgyj
-Tauros,dfghj,fghj,drtfgy,drftyh
-Tarembulle,xdcfgvh,xdcfgvh,drftguh,edrftgy
-Tarembulle,dxcfgvh,edrtfgyh,rdtfgyh,edrtfgyuh
-Zarude,dcfvgbhn,cfgvbhnj,cfgvbh,cfgvbhn
+Abo,poison,Sa mâchoire peut se désarticuler.,Morsure,Mue, intidmidation
+Abra,Psy,il utilise dans son sommeil.,Charbourg,Synchro, Attention
+Akwakwak,Eau,Il nage à vitesse max grâce à ses pattes palmées,Pistolet à 0 et Hydrocanon,Ciel gris, Moiteur
+salameche,fn,drtfyhu,xdcfgvh,drfghj
+Pikachu,xrct,drtfgh,edrtfgy,efgh

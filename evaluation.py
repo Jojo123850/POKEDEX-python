@@ -28,6 +28,31 @@ class Pokemon:
         self.attack= attaques
         self.talent= talent
         self.image= image
+
+def load_pokedex():
+    if not os.path.exists("sauvegarde.txt"):
+        return 
+
+    with open("sauvegarde.txt", "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+
+            name, type_, capacity, attack, talent= line.split(",", 4)
+
+            # Charger l'image si elle existe
+            imageO = None
+            img_path = f"IMG/{name.capitalize()}.png"
+            if os.path.exists(img_path):
+                img = tk.PhotoImage(file=img_path)
+                imageO = img.subsample(3, 3)
+
+            pokemon = Pokemon(name, type_, capacity, attack, talent, imageO)
+
+            Pokedex.append(pokemon)
+            listbox.insert(tk.END, pokemon.name)
+
         
 
 # LES DONNEES
@@ -35,7 +60,9 @@ Abo = Pokemon("Abo", "poison", "Sa mâchoire peut se désarticuler.","Morsure", 
 Abra = Pokemon("Abra","Psy","il utilise dans son sommeil.","Charbourg","Synchro, Attention",imageabra)
 Akwakwak = Pokemon("Akwakwak", "Eau", "Il nage à vitesse max grâce à ses pattes palmées", "Pistolet à 0 et Hydrocanon", "Ciel gris, Moiteur", imageakwa)
 
-Pokedex = [Abo, Abra, Akwakwak]
+Pokedex = []
+load_pokedex()
+
 
 # AJOUT POKEMON DANS LISTBOX
 for p in Pokedex:
@@ -57,7 +84,7 @@ def user():
                 label_type.config(text= f"Type: {p.type}")
                 label_capacity.config(text= f"Capacité: {p.capacity}")
                 label_attack.config(text= f"Attaque: {p.attack}")
-                label_talent.config(text= f"Description: {p.talent}")
+                label_talent.config(text= f"Talent: {p.talent}")
                 
                 label_image.config(image=p.image)
     except ValueError:
@@ -97,87 +124,58 @@ bouton = tk.Button(fenetre, text="Voir le pokémon", command= user)
 bouton.place(x=300, y=430)
 
 #AJOUT D'UN NOUVEAU POKEMON DANS LA LISTE
-def add_pokedex(): 
-        name1= champ_saisie_name.get()
-        type1= champ_saisie_type.get()
-        capacity1= champ_saisie_capacity.get()
-        attack1= champ_saisie_attack.get()
-        talent1= champ_saisie_talent.get()
-        imageO = None
-        image12= name1.capitalize()
-        
- 
-        name1= champ_saisie_name.get().strip()
+def add_pokedex():
+    name1 = champ_saisie_name.get().strip()
+    type1 = champ_saisie_type.get()
+    capacity1 = champ_saisie_capacity.get()
+    attack1 = champ_saisie_attack.get()
+    talent1 = champ_saisie_talent.get()
 
+    if not all([name1, type1, capacity1, attack1, talent1]):
+        messagebox.showerror("Erreur", "Tous les champs doivent être remplis.")
+        return
 
-# LES MESSAGES D'ERREUR
-    # Nom vide
-        if name1 == "":
-            messagebox.showerror("Erreur", "Le nom du Pokémon est vide.")
+    for p in Pokedex:
+        if p.name.lower() == name1.lower():
+            messagebox.showerror("Erreur", "Ce Pokémon existe déjà.")
             return
 
-    # Pour les pokémons qui existent déjà dans le Pokédex
+    imageO = None
+    img_path = f"IMG/{name1.capitalize()}.png"
+    if os.path.exists(img_path):
+        img = tk.PhotoImage(file=img_path)
+        imageO = img.subsample(3, 3)
+
+    nouveau_pokemon = Pokemon(name1, type1, capacity1, attack1, talent1, imageO)
+
+    Pokedex.append(nouveau_pokemon)
+    listbox.insert(tk.END, name1)
+
+    messagebox.showinfo("Succès", f"{name1} a été ajouté au Pokédex !")
+
+       
+def save():
+    with open("sauvegarde.txt", "w", encoding="utf-8") as f:
         for p in Pokedex:
-            if p.name.lower() == name1.lower():
-                messagebox.showerror("Erreur",
-                    "Ce Pokémon existe déjà dans le Pokédex.")
-                return
-    
-        if not all([name1, type1, capacity1, attack1, talent1]):
-            messagebox.showerror("Erreur",
-                "Tous les champs doivent être remplis.")
-            return
+            f.write(f"{p.name},{p.type},{p.capacity},{p.attack},{p.talent}\n")
 
-# POUR VERIFIER SI CE QU'ON VIENT D'AJOUTER 
-        file_path = f"IMG/{image12}.png"
-        if os.path.exists(file_path):
-            image123= tk.PhotoImage(file=f"IMG/{image12}.png")
-            imageO= image123.subsample(3, 3)
-
-        nouveau_pokemon= Pokemon(name1, type1, capacity1, attack1, talent1,imageO)
-
-
-# Ajouter un nouveau pokemon
-        Pokedex.append(nouveau_pokemon)       
-        listbox.insert(tk.END, nouveau_pokemon.name)  
-        messagebox.showinfo("Succès", f"{name1} a été ajouté au Pokédex !")
-
-        with open("sauvegarde.txt", "a", encoding="utf-8") as f:
-            fichier= open("sauvegarde.txt", "a")
-            fichier.write(f"{name1},{type1},{nouveau_pokemon.capacity},{nouveau_pokemon.attack},{nouveau_pokemon.talent}\n")
-        
-            lines= f.readlines()
-
-            for line in lines:
-                liste = line.split(", ")
-                name1 = liste[0]
-                type1 = liste[1]
-                capacity1 = liste[2]
-                attack1 = liste[3]
-                talent1 = liste[4]
-                  
-# Ajouter un nouveau pokemon
-                nouveau_pokemon= Pokemon(name1, type1, capacity1, attack1, talent1,imageO)
-                Pokedex.append(nouveau_pokemon)       
-                listbox.insert(tk.END, nouveau_pokemon.name)  
-
+    messagebox.showinfo("Sauvegarde", "Pokédex enregistré avec succès.")
 
 
           
 # Supprimer les pokemon
 def delete():
-        index = listbox.curselection()[0]
-        selection = listbox.get(index)
-        namedel= listbox.get(index)
+        selection= listbox.curselection()
+        index =selection
+        namedel = listbox.get(index)
+
         for p in Pokedex:
              if p== namedel:
                   Pokedex.remove(p)
                   break
+             
       
-        listbox.delete(index)
-
-            
-        
+        listbox.delete(index)      
 # Pour vider les champs après ajout
         champ_saisie_name.delete(0, tk.END)
         champ_saisie_type.delete(0, tk.END)
@@ -221,6 +219,9 @@ bouton1.place(x=650, y=430)
 
 bouton2 = tk.Button(fenetre, text="Suprimer le Pokémon", command= delete,fg="black",activeforeground="red",)
 bouton2.place(x=300, y=470)
+
+bouton2 = tk.Button(fenetre, text="Enregistrer le pokémon", command= save,fg="black",activeforeground="red",)
+bouton2.place(x=300, y=510)
 
 
 fenetre.geometry("1024x768")
