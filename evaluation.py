@@ -3,8 +3,8 @@ from tkinter import messagebox
 import os
 
 
-fenetre = tk.Tk()
-fenetre.title("Mon projet pokedex")
+screen = tk.Tk()
+screen.title("Mon projet pokedex")
 
 # LES IMAGES
 image1 = tk.PhotoImage(file="IMG/Abo.png",)
@@ -16,19 +16,21 @@ imageakwa = image3.subsample(2,2)
 logo= tk.PhotoImage(file="IMG/Pokemon-Symbol-logo.png")
 logo1= logo.subsample(20,20)
 
-listbox = tk.Listbox(fenetre, width=50)
+listbox = tk.Listbox(screen, width=50)
 listbox.place(x=300, y=100)
 
 #CLASSE POKEMON
 class Pokemon:
     def __init__ (self, nom, type , capacites, attaques, talent, image):
-        self.name = nom
-        self.type = type
-        self.capacity = capacites
-        self.attack= attaques
-        self.talent= talent
-        self.image= image
+            self.name = nom
+            self.type = type
+            self.capacity = capacites
+            self.attack= attaques
+            self.talent= talent
+            self.image= image
 
+
+# ENREGISTRER LES POKEMONS AJOUTE
 def load_pokedex():
     if not os.path.exists("sauvegarde.txt"):
         return 
@@ -49,7 +51,6 @@ def load_pokedex():
                 imageO = img.subsample(3, 3)
 
             pokemon = Pokemon(name, type_, capacity, attack, talent, imageO)
-
             Pokedex.append(pokemon)
             listbox.insert(tk.END, pokemon.name)
 
@@ -87,36 +88,36 @@ def user():
 
 
 # LOGO POKEDEX
-label_titre = tk.Label(fenetre,text="POKEDEX",font=("Arial", 24, "bold"),fg= "red")
+label_titre = tk.Label(screen,text="POKEDEX",font=("Arial", 24, "bold"),fg= "red")
 label_titre.place(x=375, y=25)
-label_logo = tk.Label(fenetre, image=logo1)
+label_logo = tk.Label(screen, image=logo1)
 label_logo.place(x=290,y=10)
 
 # LES LABELS DE LA LISTBOX
-
-
-
-label_name= tk.Label(fenetre, text = "Nom:")
+label_name= tk.Label(screen, text = "Nom:")
 label_name.place(x=300, y=270)
 
-label_type= tk.Label(fenetre, text = "Type:")
+label_type= tk.Label(screen, text = "Type:")
 label_type.place(x=300, y=290)
 
-label_capacity= tk.Label(fenetre, text = "Capacité:")
+label_capacity= tk.Label(screen, text = "Capacité:")
 label_capacity.place(x=300, y=310)
 
-label_attack= tk.Label(fenetre, text = "Attaque:")
+label_attack= tk.Label(screen, text = "Attaque:")
 label_attack.place(x=300, y=330)
 
-label_talent= tk.Label(fenetre, text = "Talent:")
+label_talent= tk.Label(screen, text = "Talent:")
 label_talent.place(x=300, y=350)
 
-label_image = tk.Label(fenetre)
+label_image = tk.Label(screen)
 label_image.place(x=650, y=100)
 
+
 # BOUTON POUR VOIR LE POKEMON DANS LA LISTE
-bouton = tk.Button(fenetre, text="Voir le pokémon", command= user)
+bouton = tk.Button(screen, text="Voir le pokémon", command= user)
 bouton.place(x=300, y=430)
+
+
 
 #AJOUT D'UN NOUVEAU POKEMON DANS LA LISTE
 def add_pokedex():
@@ -126,10 +127,12 @@ def add_pokedex():
     attack1 = champ_saisie_attack.get()
     talent1 = champ_saisie_talent.get()
 
+# MESSAGE D'ERREUR SI LES CHAMPS SONT PAS REMPLIS
     if not all([name1, type1, capacity1, attack1, talent1]):
         messagebox.showerror("Erreur", "Tous les champs doivent être remplis.")
         return
 
+# MESSAGE D'ERREUR SI LE POKEMON EXISTE DEJA
     for p in Pokedex:
         if p.name.lower() == name1.lower():
             messagebox.showerror("Erreur", "Ce Pokémon existe déjà.")
@@ -146,79 +149,82 @@ def add_pokedex():
     Pokedex.append(nouveau_pokemon)
     listbox.insert(tk.END, name1)
 
+
+# POUR DIRE QUE LE POKEDEX EST AJOUTE A LA LISTE
     messagebox.showinfo("Succès", f"{name1} a été ajouté au Pokédex !")
 
-       
+# POUR SAUVEGARDER LES CHAMPS REMPLIS DANS UN FICHIER TXT 
 def save():
     with open("sauvegarde.txt", "w", encoding="utf-8") as f:
         for p in Pokedex:
             f.write(f"{p.name},{p.type},{p.capacity},{p.attack},{p.talent}\n")
 
     messagebox.showinfo("Sauvegarde", "Pokédex enregistré avec succès.")
-
-
           
-# Supprimer les pokemon
+# POUR SUPPRIMER UN POKEMON
 def delete():
         selection= listbox.curselection()
         index =selection
         namedel = listbox.get(index)
-
-        for p in Pokedex:
-             if p== namedel:
-                  Pokedex.remove(p)
-                  break
-             
+        if index:
+             confirm= messagebox.askyesno("Confirmation", f"Es-tu sur de supprimer ce pokémon?")
+             if not confirm:
+              return
+        messagebox.showerror("Suppression", "Pokedex supprimé avec succès")
       
         listbox.delete(index)      
-# Pour vider les champs après ajout
+# POUR VIDER LES CHAMPS APRES L'AJOUT
         champ_saisie_name.delete(0, tk.END)
         champ_saisie_type.delete(0, tk.END)
         champ_saisie_capacity.delete(0, tk.END)
         champ_saisie_attack.delete(0, tk.END)
         champ_saisie_talent.delete(0, tk.END)  
 
-# Champ pour ajouter un pokemon
-label_text= tk.Label(fenetre, text = "Ajouter un nouveau pokémon:")
+# CHAMP POUR AJOUTER UN POKEMON
+label_text= tk.Label(screen, text = "Ajouter un nouveau pokémon:")
 label_text.place(x=650, y=80)
 
 
-label_name1= tk.Label(fenetre, text = "Nom:")
+label_name1= tk.Label(screen, text = "Nom:")
 label_name1.place(x=650, y=110)
-champ_saisie_name = tk.Entry(fenetre,width=50)
+champ_saisie_name = tk.Entry(screen,width=50)
 champ_saisie_name.place(x=650, y=140)
 
-label_type1= tk.Label(fenetre, text = "Type:")
+label_type1= tk.Label(screen, text = "Type:")
 label_type1.place(x=650, y=170)
-champ_saisie_type = tk.Entry(fenetre, text="Type:",width=50)
+champ_saisie_type = tk.Entry(screen, text="Type:",width=50)
 champ_saisie_type.place(x=650, y=200)
 
-label_capacity1= tk.Label(fenetre, text = "Capacité:")
+label_capacity1= tk.Label(screen, text = "Capacité:")
 label_capacity1.place(x=650, y=230)
-champ_saisie_capacity = tk.Entry(fenetre, text="Capacité:", width=50)
+champ_saisie_capacity = tk.Entry(screen, text="Capacité:", width=50)
 champ_saisie_capacity.place(x=650, y=260)
  
-label_talent1= tk.Label(fenetre, text = "Talent:")
+label_talent1= tk.Label(screen, text = "Talent:")
 label_talent1.place(x=650, y=290)
-champ_saisie_talent = tk.Entry(fenetre, text="Talent:",width=50)
+champ_saisie_talent = tk.Entry(screen, text="Talent:",width=50)
 champ_saisie_talent.place(x=650, y=320)
 
-label_attack1= tk.Label(fenetre, text = "Attaque:")
+label_attack1= tk.Label(screen, text = "Attaque:")
 label_attack1.place(x=650, y=350)
-champ_saisie_attack = tk.Entry(fenetre, text="Attaques",width=50)
+champ_saisie_attack = tk.Entry(screen, text="Attaques",width=50)
 champ_saisie_attack.place(x=650, y=380)
 
-# Bouton de sauvegarde
-bouton1 = tk.Button(fenetre, text="Sauvergarder", command= add_pokedex)
+# BOUTON POUR SAUVERGARDER LE POKEDEX AJOUTE
+bouton1 = tk.Button(screen, text="Sauvergarder", command= add_pokedex)
 bouton1.place(x=650, y=430)
 
-bouton2 = tk.Button(fenetre, text="Suprimer le Pokémon", command= delete,fg="black",activeforeground="red",)
+
+# BOUTON POUR SUPRIMER UN POKEDEX DANS LA LISTE
+bouton2 = tk.Button(screen, text="Suprimer le Pokémon", command= delete,fg="black",activeforeground="red",)
 bouton2.place(x=300, y=470)
 
-bouton2 = tk.Button(fenetre, text="Enregistrer le pokémon", command= save,fg="black",activeforeground="red",)
+
+# BOUTON POUR ENREGISTRER UN POKEMON ET LE VOIR AU MOMENT DU RELANCE DE L'APPLICATION
+bouton2 = tk.Button(screen, text="Enregistrer le pokémon", command= save,fg="black",activeforeground="red",)
 bouton2.place(x=300, y=510)
 
 
-fenetre.geometry("1024x768")
-fenetre.mainloop()
+screen.geometry("1024x768")
+screen.mainloop()
 
