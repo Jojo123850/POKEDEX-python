@@ -63,11 +63,6 @@ Akwakwak = Pokemon("Akwakwak", "Eau", "Il nage à vitesse max grâce à ses patt
 Pokedex = []
 load_pokedex()
 
-
-# AJOUT POKEMON DANS LISTBOX
-for p in Pokedex:
-    listbox.insert(tk.END, p.name)
-
 # FONCTION 
 def user():
     try:
